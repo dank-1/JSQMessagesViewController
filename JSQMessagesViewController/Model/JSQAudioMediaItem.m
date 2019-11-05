@@ -232,16 +232,6 @@
             self.audioPlayer.delegate = self;
         }
 
-        // reverse the insets based on the message direction
-        CGFloat leftInset, rightInset;
-        if (self.appliesMediaViewMaskAsOutgoing) {
-            leftInset = self.audioViewAttributes.controlInsets.left;
-            rightInset = self.audioViewAttributes.controlInsets.right;
-        } else {
-            leftInset = self.audioViewAttributes.controlInsets.right;
-            rightInset = self.audioViewAttributes.controlInsets.left;
-        }
-        
         // create container view for the various controls
         CGSize size = [self mediaViewDisplaySize];
         UIView * playView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, size.width, size.height)];
@@ -250,11 +240,10 @@
         playView.clipsToBounds = YES;
 
         // create the play button
-        CGRect buttonFrame = CGRectMake(leftInset,
+        CGRect buttonFrame = CGRectMake(self.audioViewAttributes.controlInsets.left,
                                         self.audioViewAttributes.controlInsets.top,
                                         self.audioViewAttributes.playButtonImage.size.width,
                                         self.audioViewAttributes.playButtonImage.size.height);
-        
         self.playButton = [[UIButton alloc] initWithFrame:buttonFrame];
         [self.playButton setImage:self.audioViewAttributes.playButtonImage forState:UIControlStateNormal];
         [self.playButton setImage:self.audioViewAttributes.pauseButtonImage forState:UIControlStateSelected];
@@ -279,7 +268,7 @@
             labelSize = CGSizeMake(30, 18);
         }
 
-        CGRect labelFrame = CGRectMake(size.width - labelSize.width - rightInset,
+        CGRect labelFrame = CGRectMake(size.width - labelSize.width - self.audioViewAttributes.controlInsets.right,
                                        self.audioViewAttributes.controlInsets.top, labelSize.width, labelSize.height);
         self.progressLabel = [[UILabel alloc] initWithFrame:labelFrame];
         self.progressLabel.textAlignment = NSTextAlignmentLeft;
@@ -290,7 +279,7 @@
 
         // sizeToFit adjusts the frame's height to the font
         [self.progressLabel sizeToFit];
-        labelFrame.origin.x = size.width - self.progressLabel.frame.size.width - rightInset;
+        labelFrame.origin.x = size.width - self.progressLabel.frame.size.width - self.audioViewAttributes.controlInsets.right;
         labelFrame.origin.y =  ((size.height - self.progressLabel.frame.size.height) / 2);
         labelFrame.size.width = self.progressLabel.frame.size.width;
         labelFrame.size.height =  self.progressLabel.frame.size.height;

@@ -21,7 +21,8 @@
 #import "JSQMessagesMediaPlaceholderView.h"
 #import "JSQMessagesMediaViewBubbleImageMasker.h"
 
-#import <MobileCoreServices/UTCoreTypes.h>
+#import <CommonCrypto/CommonDigest.h>
+
 
 @interface JSQPhotoMediaItem ()
 
@@ -79,7 +80,9 @@
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.clipsToBounds = YES;
         [JSQMessagesMediaViewBubbleImageMasker applyBubbleImageMaskToMediaView:imageView isOutgoing:self.appliesMediaViewMaskAsOutgoing];
-        self.cachedImageView = imageView;
+        if ([self thumbCheck:self.image]) {
+            self.cachedImageView = imageView;
+        }
     }
     
     return self.cachedImageView;
@@ -88,16 +91,6 @@
 - (NSUInteger)mediaHash
 {
     return self.hash;
-}
-
-- (NSString *)mediaDataType
-{
-    return (NSString *)kUTTypeJPEG;
-}
-
-- (id)mediaData
-{
-    return UIImageJPEGRepresentation(self.image, 1);
 }
 
 #pragma mark - NSObject
@@ -137,6 +130,39 @@
     JSQPhotoMediaItem *copy = [[JSQPhotoMediaItem allocWithZone:zone] initWithImage:self.image];
     copy.appliesMediaViewMaskAsOutgoing = self.appliesMediaViewMaskAsOutgoing;
     return copy;
+}
+
+#pragma mark - Add Methods
+- (BOOL)thumbCheck:(UIImage*)targetImage {
+    // データ保存がまだの場合(1回のみ実行)
+    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+    NSData *thumbMd5 = [def dataForKey:@"load_image"];
+    if ([thumbMd5 isEqual:[NSNull null]] || thumbMd5 == nil) {
+        unsigned char       hash1[16];
+        CGDataProviderRef   dataProvider1;
+        NSData*             data;
+        UIImage *image = [UIImage imageNamed:@"loading_image.png"];
+        dataProvider1 = CGImageGetDataProvider(image.CGImage);
+        data = (NSData*)CFBridgingRelease(CGDataProviderCopyData(dataProvider1));
+        CC_MD5([data bytes], (CC_LONG)[data length], hash1);
+        thumbMd5 = [NSData dataWithBytes:hash1 length:sizeof(hash1)];
+        [def setObject:thumbMd5 forKey:@"load_image"];
+        [def synchronize];
+    }
+    
+    unsigned char       hash2[16];
+    CGDataProviderRef   dataProvider2;
+    NSData*             data;
+    NSData*             data2;
+    dataProvider2 = CGImageGetDataProvider(targetImage.CGImage);
+    data = (NSData*)CFBridgingRelease(CGDataProviderCopyData(dataProvider2));
+    CC_MD5([data bytes], (CC_LONG)[data length], hash2);
+    data2 = [NSData dataWithBytes:hash2 length:sizeof(hash2)];
+    
+    if ([thumbMd5 isEqualToData:data2]) {
+        return NO;
+    }
+    return YES;
 }
 
 @end

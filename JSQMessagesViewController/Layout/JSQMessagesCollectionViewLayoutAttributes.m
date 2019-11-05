@@ -20,17 +20,6 @@
 
 @implementation JSQMessagesCollectionViewLayoutAttributes
 
-#pragma mark - Init
-
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _messageBubbleFont = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-        _messageBubbleContainerViewWidth = 320.0f;
-    }
-    return self;
-}
-
 #pragma mark - Setters
 
 - (void)setMessageBubbleFont:(UIFont *)messageBubbleFont

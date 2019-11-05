@@ -22,7 +22,7 @@
 //  https://github.com/jessesquires/JSQMessagesViewController/issues/237
 //  ********************************
 
-"load_earlier_messages" = "古いメッセージを読み込む";
+"load_earlier_messages" = "前のメッセージを表示する";
 
 "send" = "送信";
 

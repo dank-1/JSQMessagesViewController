@@ -23,8 +23,6 @@
 // https://github.com/jessesquires/JSQMessagesViewController/issues/1647
 //
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface JSQMessagesTypingView : UIView
 
 @property (strong, nonatomic) UIColor *dotsColor;
@@ -36,5 +34,3 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL animated;
 
 @end
-
-NS_ASSUME_NONNULL_END

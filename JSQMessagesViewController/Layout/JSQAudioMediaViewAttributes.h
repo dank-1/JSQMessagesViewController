@@ -31,47 +31,47 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The image for the play button. The default is a play icon.
  */
-@property (nonatomic, strong) UIImage *playButtonImage;
+@property (nonatomic, strong, readonly) UIImage *playButtonImage;
 
 /**
  *  The image for the pause button. The default is a pause icon.
  */
-@property (nonatomic, strong) UIImage *pauseButtonImage;
+@property (nonatomic, strong, readonly) UIImage *pauseButtonImage;
 
 /**
  *  The font for the elapsed time label. The default is a system font.
  */
-@property (strong, nonatomic) UIFont *labelFont;
+@property (strong, nonatomic, nonnull) UIFont *labelFont;
 
 /**
  *  Specifies whether to show fractions of a second for audio files with a duration of less than 1 minute.
  */
-@property (nonatomic, assign) BOOL showFractionalSeconds;
+@property (nonatomic, assign, readonly) BOOL showFractionalSeconds;
 
 /**
  *  The background color for the player.
  */
-@property (nonatomic, strong) UIColor *backgroundColor;
+@property (nonatomic, strong, readonly) UIColor *backgroundColor;
 
 /**
  *  The tint color for the player.
  */
-@property (nonatomic, strong) UIColor *tintColor;
+@property (nonatomic, strong, readonly) UIColor *tintColor;
 
 /**
  *  Insets that sepcify the padding around the play/pause button and time label.
  */
-@property (nonatomic, assign) UIEdgeInsets controlInsets;
+@property (nonatomic, assign, readonly) UIEdgeInsets controlInsets;
 
 /**
  *  Specifies the padding between the button, progress bar, and label.
  */
-@property (nonatomic, assign) CGFloat controlPadding;
+@property (nonatomic, assign, readonly) CGFloat controlPadding;
 
 /**
  *  Specifies the audio category set prior to playback.
  */
-@property (nonatomic, copy) NSString *audioCategory;
+@property (nonatomic, copy, readonly) NSString *audioCategory;
 
 /**
  *  Specifies the audio category options set prior to playback.
