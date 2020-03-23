@@ -140,8 +140,8 @@ typedef void (^JSQAnimationCompletionBlock)(BOOL finished);
     [self jsq_unregisterForNotifications];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(jsq_didReceiveKeyboardDidShowNotification:)
-                                                 name:UIKeyboardDidShowNotification
+                                             selector:@selector(jsq_didReceiveKeyboardWillShowNotification:)
+                                                 name:UIKeyboardWillShowNotification
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -149,14 +149,16 @@ typedef void (^JSQAnimationCompletionBlock)(BOOL finished);
                                                  name:UIKeyboardWillChangeFrameNotification
                                                object:nil];
 
+    /* dont use this any more, see UIKeyboardWillChangeFrameNotification
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(jsq_didReceiveKeyboardDidChangeFrameNotification:)
                                                  name:UIKeyboardDidChangeFrameNotification
                                                object:nil];
+     */
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(jsq_didReceiveKeyboardDidHideNotification:)
-                                                 name:UIKeyboardDidHideNotification
+                                             selector:@selector(jsq_didReceiveKeyboardWillHideNotification:)
+                                                 name:UIKeyboardWillHideNotification
                                                object:nil];
 }
 
@@ -165,7 +167,7 @@ typedef void (^JSQAnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)jsq_didReceiveKeyboardDidShowNotification:(NSNotification *)notification
+- (void)jsq_didReceiveKeyboardWillShowNotification:(NSNotification *)notification
 {
     self.keyboardView = self.textView.inputAccessoryView.superview;
     [self jsq_setKeyboardViewHidden:NO];
@@ -180,14 +182,16 @@ typedef void (^JSQAnimationCompletionBlock)(BOOL finished);
     [self jsq_handleKeyboardNotification:notification completion:nil];
 }
 
+/* dont use this any more, see UIKeyboardWillChangeFrameNotification
 - (void)jsq_didReceiveKeyboardDidChangeFrameNotification:(NSNotification *)notification
 {
     [self jsq_setKeyboardViewHidden:NO];
 
     [self jsq_handleKeyboardNotification:notification completion:nil];
 }
+ */
 
-- (void)jsq_didReceiveKeyboardDidHideNotification:(NSNotification *)notification
+- (void)jsq_didReceiveKeyboardWillHideNotification:(NSNotification *)notification
 {
     self.keyboardView = nil;
 
@@ -230,7 +234,7 @@ typedef void (^JSQAnimationCompletionBlock)(BOOL finished);
 
 - (void)jsq_setKeyboardViewHidden:(BOOL)hidden
 {
-    self.keyboardView.hidden = hidden;
+    self.textView.inputAccessoryView.alpha = hidden ? 0.0 : 1.0;
     self.keyboardView.userInteractionEnabled = !hidden;
 }
 
