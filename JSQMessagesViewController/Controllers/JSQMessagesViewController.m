@@ -813,6 +813,13 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
 
 - (void)jsq_setToolbarBottomLayoutGuideConstant:(CGFloat)constant
 {
+    CGPoint oldOffset = self.collectionView.contentOffset;
+    CGFloat lastConstant = self.toolbarBottomLayoutGuide.constant;
+    CGFloat alpha = lastConstant - constant;
+    oldOffset.y -= alpha;
+    if (oldOffset.y > 0) {
+        self.collectionView.contentOffset = oldOffset;
+    }
     self.toolbarBottomLayoutGuide.constant = constant;
     [self.view setNeedsUpdateConstraints];
     [self.view layoutIfNeeded];
